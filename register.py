@@ -6,7 +6,7 @@ from tkinter import messagebox
 
 # CONNECTING TO DATABASE
 mydb = mysql.connector.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1',
-                               database='LifeChoices_Online', auth_plugin='mysql_native_password')
+                               database='LifeChoices_Online')
 
 mycursor = mydb.cursor()
 
@@ -128,4 +128,15 @@ cleans = Button(frame_right, text="CLEAR", font=("Ariel", 13), bg="#346ab3", fg=
 cleans.place(x=260, y=300)
 
 
+# EXIT BUTTON AND FUNCTIONALITY
+def out():
+    msg = messagebox.askquestion("GONE SO SOON", " ARE YOU SURE YOU WANT TO EXIT ?")
+    if msg == "yes":
+        root.destroy()
+
+
+destroy = Button(root, text="E X I T", font=("Ariel", 13), bg="black", fg="#f7f7f7", command=out)
+destroy.place(x=455, y=700)
+
+# RUN CODE
 root.mainloop()
