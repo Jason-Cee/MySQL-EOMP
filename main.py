@@ -4,6 +4,7 @@
 import mysql.connector
 from tkinter import *
 from tkinter import PhotoImage
+from tkinter import messagebox
 
 # CONNECTING TO DATABASE
 mydb = mysql.connector.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1',
@@ -51,8 +52,14 @@ def clear():
 
 
 # EXIT BUTTON AND FUNCTIONALITY
-destroy = Button(root, text="E X I T", font=("Ariel", 13), bg="#9ccb3b", fg="#346ab3")
-destroy.place(x=40, y=700)
+def out():
+    msg = messagebox.askquestion("GONE SO SOON", " ARE YOU SURE YOU WANT TO EXIT ?")
+    if msg == "yes":
+        root.destroy()
+
+
+destroy = Button(root, text="E X I T", font=("Ariel", 13), bg="black", fg="#346ab3", command=out)
+destroy.place(x=455, y=700)
 
 # CLEAR BUTTON
 remove = Button(frame_left, text="CLEAR", font=("Ariel", 13), bg="#9ccb3b", fg="#346ab3", command=clear)
@@ -63,5 +70,22 @@ frame_right = Frame(root, width=400, height=400, bg="#9ccb3b")
 frame_right.place(x=500, y=200)
 reg = Label(frame_right, text="REGISTER", font=("Ariel", 20), bg="#9ccb3b", fg="#346ab3")
 reg.place(x=130, y=10)
+
+# LABEL
+label1 = Label(frame_right, text="DON'T HAVE AN ACCOUNT ?", font=("Ariel", 20), bg="#9ccb3b", fg="#346ab3")
+label1.place(x=10, y=100)
+label2 = Label(frame_right, text="REGISTER NOW", font=("Ariel", 20), bg="#9ccb3b", fg="#346ab3")
+label2.place(x=100, y=200)
+
+# SIGN UP BUTTON AND FUNCTIONALITY
+def inn():
+    msg = messagebox.showinfo("SIGN UP NOW", "YOU ARE GOING TO SIGN UP WINDOW")
+    if msg == "ok":
+        root.destroy()
+        import register
+
+
+sign_in = Button(frame_right, text=" SIGN UP ", font=("Ariel", 13), bg="#346ab3", fg="#9ccb3b", command=inn)
+sign_in.place(x=155, y=290)
 
 root.mainloop()
