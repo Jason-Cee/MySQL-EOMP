@@ -57,6 +57,7 @@ password.place(x=10, y=240)
 password_ent = Entry(frame_left, bg="#9ccb3b", fg="black")
 password_ent.place(x=210, y=240)
 
+
 # CLEAR BUTTON AND FUNCTIONALITY
 def wipe():
     user_ent.delete(0, END)
@@ -68,7 +69,6 @@ def wipe():
 
 clean = Button(frame_left, text="CLEAR", font=("Ariel", 13), bg="#9ccb3b", fg="#346ab3", command=wipe)
 clean.place(x=50, y=300)
-
 
 # SUBMIT BUTTON AND FUNCTIONALITY
 # def submit():

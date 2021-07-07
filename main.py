@@ -7,12 +7,6 @@ from tkinter import messagebox
 # IMPORTS
 import mysql.connector
 
-# CONNECTING TO DATABASE
-mydb = mysql.connector.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1',
-                               database='LifeChoices_Online')
-
-mycursor = mydb.cursor()
-
 # WINDOW
 root = Tk()
 root.title("Lifechoices Online")  # WINDOW TITLE
@@ -36,36 +30,35 @@ user_ent = Entry(frame_left, bg="#9ccb3b", fg="black")
 user_ent.place(x=200, y=101)
 
 # PASSWORD LABEL AND ENTRY
-passw = Label(frame_left, text="Class (1 / 2):", font=("Ariel", 13), bg="#346ab3", fg="#9ccb3b")
-passw.place(x=10, y=200)
-passw_ent = Entry(frame_left, bg="#9ccb3b", fg="black")
-passw_ent.place(x=200, y=200)
+passid = Label(frame_left, text="ID Number:", font=("Ariel", 13), bg="#346ab3", fg="#9ccb3b")
+passid.place(x=10, y=200)
+passid_ent = Entry(frame_left, bg="#9ccb3b", fg="black")
+passid_ent.place(x=200, y=200)
 
 
 # SIGN IN BUTTON AND FUNCTIONALITY
 
-def here():
-    if user_ent == "":
-        messagebox.showerror("INVALID", "PLEASE ENTER NAME AND SURNAME")
-        user_ent.delete(0, END)
-        passw_ent.delete(0, END)
+# def here():
+#     try:
+#         # CONNECTING TO DATABASE
+#         mydb = mysql.connector.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1',
+#                                    database='LifeChoices_Online', auht_plugin='mysql_native_password')
+#
+#         mycursor = mydb.cursor()
+#
+#         id_num = passid_ent.get()
+#         query = "Select * from User where "
+#
 
-    elif passw_ent == "":
-        messagebox.showerror("INVALID", "PLEASE ENTER VALID CLASS")
-    else:
-        messagebox.showinfo("YOU ARE IN", "HAVE AN AMAZING DAY.")
-        root.destroy()
-        import out
 
-
-sign = Button(frame_left, text="SIGN IN", font=("Ariel", 13), bg="#9ccb3b", fg="#346ab3", command=here)
+sign = Button(frame_left, text="SIGN IN", font=("Ariel", 13), bg="#9ccb3b", fg="#346ab3")
 sign.place(x=150, y=350)
 
 
 # GIVING CLEAR BUTTON FUNCTIONALITY
 def clear():
     user_ent.delete(0, END)
-    passw_ent.delete(0, END)
+    passid_ent.delete(0, END)
 
 
 # CLEAR BUTTON
