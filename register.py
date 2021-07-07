@@ -109,10 +109,13 @@ id_nums_ent.place(x=210, y=230)
 
 
 # SUBMIT BUTTON AND FUNCTIONALITY
-# def submit():
-#
-#
-enters = Button(frame_right, text="SUBMIT", font=("Ariel", 13), bg="#346ab3", fg="#9ccb3b")
+def submit():
+    messagebox.showinfo("THANK YOU", "YOUR DETAILS HAVE BEEN LOADED")
+    root.destroy()
+    import out
+
+
+enters = Button(frame_right, text="SUBMIT", font=("Ariel", 13), bg="#346ab3", fg="#9ccb3b", command=submit)
 enters.place(x=50, y=350)
 
 
