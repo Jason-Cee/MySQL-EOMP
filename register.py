@@ -111,7 +111,7 @@ def submit():
                                        database="LifeChoices_Online", auth_plugin="mysql_native_password")
         mycursor = mydb.cursor()
 
-        sql = "INSERT INTO Next_Of_Kin (Name, Mobile_Number) VALUES (%s, %s)"
+        sql = "INSERT INTO Next_Of_Kin (Name, Mobile_Number, User_Id) VALUES (%s, %s, '13')"
         val = (users_ent.get(), phones_ent.get())
         mycursor.execute(sql, val)
 

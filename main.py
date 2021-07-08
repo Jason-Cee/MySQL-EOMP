@@ -37,21 +37,24 @@ passid = Label(frame_left, text="ID Number:", font=("Ariel", 13), bg="#346ab3", 
 passid.place(x=10, y=200)
 passid_ent = Entry(frame_left, bg="#9ccb3b", fg="black")
 passid_ent.place(x=200, y=200)
+
+
 def go():
-if user_ent.get() == "" and phone_ent.get() == "" and email_ent.get() == "" and id_num_ent.get() == "":
-    messagebox.showerror("INVALID", "PLEASE ENTER YOUR DETAILS")
-else:
-    mydb = mysql.connector.connect(user="lifechoices", password="@Lifechoices1234", host="127.0.0.1",
-                                   database="LifeChoices_Online", auth_plugin="mysql_native_password")
-    mycursor = mydb.cursor()
+    if user_ent.get() == "" and user_ent.get() == "" and passid_ent.get() == "":
+        messagebox.showerror("INVALID", "PLEASE ENTER YOUR DETAILS")
+    else:
+        mydb = mysql.connector.connect(user="lifechoices", password="@Lifechoices1234", host="127.0.0.1",
+                                       database="LifeChoices_Online", auth_plugin="mysql_native_password")
+        mycursor = mydb.cursor()
 
-    sql = "INSERT INTO User (Name, Id_Number) VALUES (%s, %s)"
-    val = (user_ent.get(), phone_ent.get(), email_ent.get(), id_num_ent.get())
-    mycursor.execute(sql, val)
+        sql = "UPDATE User SET Name = user_ent.get(), Id_Number = passid_ent.get()"
+        val = (user_ent.get(), passid_ent.get())
+        mycursor.execute(sql, val)
 
-    mydb.commit()
-    print(mycursor.rowcount, "Details Recorded.")
-    mycursor.execute("Select * from User")
+        mydb.commit()
+        print(mycursor.rowcount, "Details Recorded.")
+        mycursor.execute("Select * from User")
+
 
 sign = Button(frame_left, text="SIGN IN", font=("Ariel", 13), bg="#9ccb3b", fg="#346ab3", command=go)
 sign.place(x=255, y=350)
