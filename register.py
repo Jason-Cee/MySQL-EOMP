@@ -64,20 +64,20 @@ def submit():
         messagebox.showerror("INVALID", "PLEASE ENTER YOUR DETAILS")
     else:
         mydb = mysql.connector.connect(user="lifechoices", password="@Lifechoices1234", host="127.0.0.1",
-                                       database="LifeChoices_Online", auth_plugin="mysql_native_password")
+                                       database="Lifechoices_Online", auth_plugin="mysql_native_password")
         mycursor = mydb.cursor()
 
-        sql = "INSERT INTO User (Name, Mobile_Number, Email_Address, Id_Number) VALUES (%s, %s, %s, %s)"
+        sql = "INSERT INTO Login (Name, Phone_Number, Email_Address, Id_Number) VALUES (%s, %s, %s, %s)"
         val = (user_ent.get(), phone_ent.get(), email_ent.get(), id_num_ent.get())
         mycursor.execute(sql, val)
 
         mydb.commit()
         print(mycursor.rowcount, "Details Recorded.")
-        mycursor.execute("Select * from User")
+        mycursor.execute("Select * from Login")
         messagebox.showinfo("SUCCESS", "PLEASE ADD NEXT OF KIN DETAILS AS WELL")
 
-        users_ent["state"] = "normal"
-        phones_ent["state"] = "normal"
+        # users_ent["state"] = "normal"
+        # phones_ent["state"] = "normal"
 
 
 enter = Button(frame_left, text="SUBMIT", font=("Ariel", 13), bg="#9ccb3b", fg="#346ab3", command=submit)
@@ -92,13 +92,13 @@ reg.place(x=50, y=10)
 # NAME & SURNAME LABEL AND ENTRY
 users = Label(frame_right, text="Name & Surname:", font=("Ariel", 13), bg="#9ccb3b", fg="#346ab3")
 users.place(x=10, y=100)
-users_ent = Entry(frame_right, bg="#346ab3", fg="black", state="disabled")
+users_ent = Entry(frame_right, bg="#346ab3", fg="black")
 users_ent.place(x=210, y=100)
 
 # MOBILE NUMBER LABEL AND ENTRY
 phones = Label(frame_right, text="Mobile Number:", font=("Ariel", 13), bg="#9ccb3b", fg="#346ab3")
 phones.place(x=10, y=210)
-phones_ent = Entry(frame_right, bg="#346ab3", fg="black", state="disabled")
+phones_ent = Entry(frame_right, bg="#346ab3", fg="black")
 phones_ent.place(x=210, y=210)
 
 
@@ -108,11 +108,17 @@ def submit():
         messagebox.showerror("INVALID", "PLEASE ENTER YOUR DETAILS")
     else:
         mydb = mysql.connector.connect(user="lifechoices", password="@Lifechoices1234", host="127.0.0.1",
-                                       database="LifeChoices_Online", auth_plugin="mysql_native_password")
+                                       database="Lifechoices_Online", auth_plugin="mysql_native_password")
         mycursor = mydb.cursor()
 
-        sql = "INSERT INTO Next_Of_Kin (Name, Mobile_Number, User_Id) VALUES (%s, %s, '13')"
-        val = (users_ent.get(), phones_ent.get())
+        link = "Select * from Login"
+        link_id = mycursor.execute(link)
+        score_id = 0
+        for i in mycursor:
+            score_id = i[1]
+
+        sql = "INSERT INTO Next_Of_Kin (Name, Phone_Number, Id_Number) VALUES (%s, %s, %s)"
+        val = (users_ent.get(), phones_ent.get(), score_id)
         mycursor.execute(sql, val)
 
         mydb.commit()
