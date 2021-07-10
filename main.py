@@ -1,5 +1,5 @@
 # JASON CALVERT MYSQL END OF MODULE PROJECT
-
+import datetime
 from tkinter import *
 from tkinter import PhotoImage
 from tkinter import messagebox
@@ -15,7 +15,7 @@ root.geometry("1000x800")  # WINDOW SIZE
 root.resizable(False, False)  # CAN'T CHANGE SIZE MANUALLY
 # root.config(bg="white")  # WINDOW COLOR
 
-now = datetime.now()
+# now = datetime.now()
 
 # LIFECHOICES IMAGE / LOGO
 img = PhotoImage(file="lca1.png")
@@ -40,20 +40,75 @@ passid_ent.place(x=200, y=200)
 
 
 def go():
-    if user_ent.get() == "" and user_ent.get() == "" and passid_ent.get() == "":
-        messagebox.showerror("INVALID", "PLEASE ENTER YOUR DETAILS")
-    else:
-        mydb = mysql.connector.connect(user="lifechoices", password="@Lifechoices1234", host="127.0.0.1",
-                                       database="LifeChoices_Online", auth_plugin="mysql_native_password")
-        mycursor = mydb.cursor()
+    try:
+        db = mysql.connector.connect(host="localhost", user="lifechoices",
+                                     password="@Lifechoices1234", database="Lifechoices_Online")
+        cursor = db.cursor()
+        cursor.execute("Select * from Login where Name='" + user_ent.get() + "' and Id_Number='" + passid_ent.get() +
+                       "'")
+        row = cursor.fetchone()
 
-        sql = "UPDATE User SET Name = user_ent.get(), Id_Number = passid_ent.get()"
-        val = (user_ent.get(), passid_ent.get())
-        mycursor.execute(sql, val)
+        if row is None:
+            messagebox.showerror("Error", "Invalid Name or ID")
+            user_ent.delete(0, END)
+            passid_ent.delete(0, END)
+            user_ent.focus_set()
+        else:
+            cursor.execute(
+                "Update Login values(curdate()'" + "'curtime(),null);")
+            db.commit()
+            db.close()
+            messagebox.showinfo("Successful Sign In", "Welcome " + user_ent.get())
+            root.destroy()
 
-        mydb.commit()
-        print(mycursor.rowcount, "Details Recorded.")
-        mycursor.execute("Select * from User")
+    except ValueError as x:
+        messagebox.showerror("Error", "Enter Valid Details")
+    # try:
+    #     mydb = mysql.connector.connect(user="lifechoices", password="@Lifechoices1234", host="127.0.0.1",
+    #                                    database="Lifechoices_Online", auth_plugin="mysql_native_password")
+    #
+    #     mycursor = mydb.cursor()
+    #
+    #     # name = user_ent.get()
+    #     id_number = passid_ent.get()
+    #     query = "Select * from Login where Id_Number='{}'".format(id_number)
+    #     mycursor.execute(query)
+    #     result = mycursor.fetchall()
+    #     if not result:
+    #         messagebox.showerror("OOPS", "USER DOES NOT EXIT")
+    #     else:
+    #         # now = datetime.now()
+    #         # today = "{}".format(now.date())
+    #         # min = now.minute
+    #         # hr = now.hour
+    #         # if min <= 9:
+    #         #     min = '0' + str(min)
+    #         # if hr <= 9:
+    #         #     hr = '0' + str(hr)
+    #         # time = "{}:{}".format(hr, min)
+    #         queryA = "Insert into Login (Time_in) values (curdate(), curtime())"
+    #         mycursor.execute(queryA)
+    #         mydb.commit()
+    #         root.destroy()
+    #         import out
+    #
+    # except ValueError:
+    #     messagebox.showwarning("ERROR", "PLEASE TRY AGAIN")
+
+    # if user_ent.get() == "" and user_ent.get() == "" and passid_ent.get() == "":
+    #     messagebox.showerror("INVALID", "PLEASE ENTER YOUR DETAILS")
+    # else:
+    #     mydb = mysql.connector.connect(user="lifechoices", password="@Lifechoices1234", host="127.0.0.1",
+    #                                    database="LifeChoices_Online", auth_plugin="mysql_native_password")
+    #     mycursor = mydb.cursor()
+    #
+    #     sql = "UPDATE User SET Name = user_ent.get(), Id_Number = passid_ent.get()"
+    #     val = (user_ent.get(), passid_ent.get())
+    #     mycursor.execute(sql, val)
+    #
+    #     mydb.commit()
+    #     print(mycursor.rowcount, "Details Recorded.")
+    #     mycursor.execute("Select * from User")
 
 
 sign = Button(frame_left, text="SIGN IN", font=("Ariel", 13), bg="#9ccb3b", fg="#346ab3", command=go)

@@ -6,7 +6,7 @@ from tkinter import messagebox
 
 # CONNECTING TO DATABASE
 mydb = mysql.connector.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1',
-                               database='LifeChoices_Online')
+                               database='Lifechoices_Online')
 
 mycursor = mydb.cursor()
 
@@ -59,8 +59,12 @@ reg.place(x=130, y=10)
 # SUBMIT BUTTON AND FUNCTIONALITY
 # def submit():
 
+def sign_out():
+    messagebox.showinfo("SUCCES", "SIGNED OUT, BE SAFE")
+    root.destroy()
 
-enters = Button(frame_right, text="SIGN OUT", font=("Ariel", 13), bg="#346ab3", fg="#9ccb3b")
+
+enters = Button(frame_right, text="SIGN OUT", font=("Ariel", 13), bg="#346ab3", fg="#9ccb3b", command=sign_out)
 enters.place(x=140, y=350)
 
 

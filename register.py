@@ -58,9 +58,14 @@ clean = Button(frame_left, text="CLEAR", font=("Ariel", 13), bg="#9ccb3b", fg="#
 clean.place(x=50, y=300)
 
 
+
 # SUBMIT BUTTON AND FUNCTIONALITY
 def submit():
-    if user_ent.get() == "" and phone_ent.get() == "" and email_ent.get() == "" and id_num_ent.get() == "":
+    name = user_ent.get()
+    mobile = phone_ent.get()
+    id_number = id_num_ent.get()
+    mail = email_ent.get()
+    if name == "" and mobile == "" and id_number == "" and mail == "":
         messagebox.showerror("INVALID", "PLEASE ENTER YOUR DETAILS")
     else:
         mydb = mysql.connector.connect(user="lifechoices", password="@Lifechoices1234", host="127.0.0.1",
@@ -124,7 +129,8 @@ def submit():
         mydb.commit()
         print(mycursor.rowcount, "Details Recorded.")
         mycursor.execute("Select * from Next_Of_Kin")
-        messagebox.showinfo("SUCCESS", "DETAILS RECORDED")
+        messagebox.showinfo("SUCCESS", "DETAILS RECORDED, PLEASE SIGN IN")
+        root.destroy()
         import main
 
 
