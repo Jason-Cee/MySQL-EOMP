@@ -3,7 +3,7 @@ import datetime
 from tkinter import *
 from tkinter import PhotoImage
 from tkinter import messagebox
-from datetime import *
+from datetime import datetime
 
 # IMPORTS
 import mysql.connector
@@ -41,28 +41,53 @@ passid_ent.place(x=200, y=200)
 
 def go():
     try:
-        db = mysql.connector.connect(host="localhost", user="lifechoices",
-                                     password="@Lifechoices1234", database="Lifechoices_Online")
-        cursor = db.cursor()
-        cursor.execute("Select * from Login where Name='" + user_ent.get() + "' and Id_Number='" + passid_ent.get() +
-                       "'")
-        row = cursor.fetchone()
+        mydb = mysql.connector.connect(user="lifechoices", password="@Lifechoices1234", host="127.0.0.1",
+                                       database="Lifechoices_Online", auth_plugin="mysql_native_password")
 
-        if row is None:
-            messagebox.showerror("Error", "Invalid Name or ID")
-            user_ent.delete(0, END)
-            passid_ent.delete(0, END)
-            user_ent.focus_set()
+        mycursor = mydb.cursor()
+
+        if user_ent.get() == "" or passid_ent.get() == "":
+            messagebox.showerror("Error", "All Fields Are Required")
         else:
-            cursor.execute(
-                "Update Login values(curdate()'" + "'curtime(),null);")
-            db.commit()
-            db.close()
-            messagebox.showinfo("Successful Sign In", "Welcome " + user_ent.get())
-            root.destroy()
+            mycursor.execute('select * from Login where Name=%s and Id_Number=%s',
+                             (user_ent.get(), passid_ent.get()))
 
-    except ValueError as x:
-        messagebox.showerror("Error", "Enter Valid Details")
+            row = mycursor.fetchone()
+            if row is None:
+                messagebox.showerror("USER DOES NOT EXIST", "PLEASE REGISTER DETAILS")
+                msg = messagebox.askquestion("Plan A", "WOULD YOU LIKE TO GO TO REGISTER WINDOW ?")
+                if msg == "yes":
+                    root.destroy()
+                    import register
+            else:
+                sql = "Insert into Login (Name, Time_in) values (%s, %s)"
+                current_date = "curdate()"
+                current_time = "curtime()"
+                mycursor.execute(sql, current_date, current_time)
+                mydb.commit()
+                messagebox.showinfo(message="Login Successful! Enjoy Your Day!")
+                root.destroy()
+                import out
+
+        # if row is None:
+        #     messagebox.showerror("Error", "Invalid Name or ID")
+        #     user_ent.delete(0, END)
+        #     passid_ent.delete(0, END)
+        #     user_ent.focus_set()
+        # else:
+        #     cursor.execute(
+        #         "INSERT INTO Login (Time_in) values(curdate(), curtime())")
+        #     db.commit()
+        #     db.close()
+        #     messagebox.showinfo("Successful Sign In", "Welcome " + user_ent.get())
+        #     root.destroy()
+
+    except ValueError:
+        messagebox.showerror("OOPS", "INVALID NAME OR ID")
+        user_ent.delete(0, END)
+        passid_ent.delete(0, END)
+        user_ent.focus()
+
     # try:
     #     mydb = mysql.connector.connect(user="lifechoices", password="@Lifechoices1234", host="127.0.0.1",
     #                                    database="Lifechoices_Online", auth_plugin="mysql_native_password")
