@@ -1,146 +1,260 @@
-import mysql.connector
-from tkinter import *
-import tkinter as tk
-from tkinter import ttk
-
-root = tk.Tk()
-root.title("Admin Users Page")
-root.geometry("1054x800")
-root.config()
-
-# Background Image
-bg_img = PhotoImage(file="lca.png")
-bg_img = bg_img.subsample(5)
-bg_img_lbl = Label(root, image=bg_img)
-bg_img_lbl.place(x=450, y=0)
-
-# Users Table;
-mydb = mysql.connector.connect(user="lifechoices", password="@Lifechoices1234", host="127.0.0.1",
-                               database="Lifechoices_Online", auth_plugin="mysql_native_password")
-
-mycursor = mydb.cursor()
-mycursor.execute("select * from Login")
-user = mycursor.fetchall()
-tree = ttk.Treeview(root)
-
-# Define the number of columns
-tree["columns"] = ("Name", "Id_Number", "Phone_Number", "Email_Address", "Time_in", "Time_out")
-
-# Formatting columns
-tree.column("#0", width=55, minwidth=25)
-tree.column("Name", anchor=CENTER, width=200)
-tree.column("Id_Number", anchor=CENTER, width=154)
-tree.column("Phone_Number", anchor=CENTER, width=100)
-tree.column("Email_Address", anchor=CENTER, width=230)
-tree.column("Time_in", anchor=CENTER, width=154)
-tree.column("Time_out", anchor=CENTER, width=154)
-
-# Defining the column headings
-tree.heading("#0", text="Labels", anchor=W)
-tree.heading("Name", text="Name", anchor=CENTER)
-tree.heading("Id_Number", text="ID Number", anchor=CENTER)
-tree.heading("Phone_Number", text="Mobile", anchor=CENTER)
-tree.heading("Email_Address", text="Email Address", anchor=CENTER)
-tree.heading("Time_in", text="Time In", anchor=CENTER)
-tree.heading("Time_out", text="Time Out", anchor=CENTER)
-
-# From the database
-x = 0
-for data in user:
-    tree.insert(parent="", index="end", iid=x, text="User", values=(data[0], data[1], data[2], data[3], data[4],
-                                                                    data[5]))
-    x += 1
-
-# Placing the treeview
-tree.place(x=0, y=60)
-
-
-def register():
-    mydb = mysql.connector.connect(host="localhost", user="lifechoices",
-                                   password="@Lifechoices1234", database="Lifechoices_Online")
-    mycursor = mydb.cursor()
-    mycursor.execute("Select * from Login")
-    insert = ttk.Treeview(root)
-    insert['show'] = "headings"
-    # define number of columns
-    insert["columns"] = ("Name", "Id_Number", "Phone_Number", "Email_Address", "Time_in", "Time_out")
-
-    # assigning properties of columns
-    insert.column("Name", width=100, minwidth=50, anchor=CENTER)
-    insert.column("Id_Number", width=50, minwidth=100, anchor=CENTER)
-    insert.column("Phone_Number", width=50, minwidth=100, anchor=CENTER)
-    insert.column("Email_Address", width=140, minwidth=50, anchor=CENTER)
-    insert.column("Time_in", width=100, minwidth=100, anchor=CENTER)
-    insert.column("Time_out", width=100, minwidth=100, anchor=CENTER)
-
-    # heading names
-    insert.heading("Name", text="Name")
-    insert.heading("Id_Number", text="ID Number")
-    insert.heading("Phone_Number", text="Mobile")
-    insert.heading("Email_Address", text="Email")
-    insert.heading("Time_in", text="Time In")
-    insert.heading("Time_out", text="Time Out")
-
-    # For loop
-    # allows for the records in "SignInOutTable"
-    # to be displayed in the treeview diagram in correct order
-    i = 0
-    for user in mycursor:
-        insert.insert('', i, text="", values=(user[0], user[1], user[2], user[3], user[4], user[5]))
-        i = +1
-
-    v_scroll = ttk.Scrollbar(insert, orient="vertical")
-    v_scroll.configure(command=insert.yview)
-    insert.configure(yscrollcommand=v_scroll.set)
-    v_scroll.pack(fill=Y, side=RIGHT)
-
-    insert.place(x=50, y=70, width=1000, height=200)
-
-
-put_in = Button(root, text="INSERT", font=("Ariel", 13), bg="black", fg="#f7f7f7", command=register)
-put_in.place(x=250, y=350)
-
-take_out = Button(root, text="DELETE", font=("Ariel", 13), bg="black", fg="#f7f7f7")
-take_out.place(x=700, y=350)
-
-sign_out = Button(root, text="E X I T", font=("Ariel", 13), bg="black", fg="#f7f7f7")
-sign_out.place(x=200, y=750)
-
-sign_in = Button(root, text="SIGN IN", font=("Ariel", 13), bg="black", fg="#f7f7f7")
-sign_in.place(x=460, y=750)
-
-out = Button(root, text="SIGN OUT", font=("Ariel", 13), bg="black", fg="#f7f7f7")
-out.place(x=730, y=750)
-
-mycursor.execute("select * from Next_Of_Kin")
-users = mycursor.fetchall()
-tree1 = ttk.Treeview(root)
-
-# Define the number of columns
-tree1["columns"] = ("Id", "Name", "Phone_Number", "Id_Number")
-
-# Formatting columns
-tree1.column("#0", width=75, minwidth=25)
-tree1.column("Id", anchor=CENTER)
-tree1.column("Name", anchor=CENTER)
-tree1.column("Phone_Number", anchor=CENTER, width=120)
-tree1.column("Id_Number", anchor=CENTER, width=150)
-
-# Defining the column headings
-tree1.heading("#0", text="Labels", anchor=CENTER)
-tree1.heading("Id", text="Row Number", anchor=CENTER)
-tree1.heading("Name", text="Name", anchor=CENTER)
-tree1.heading("Phone_Number", text="Mobile", anchor=CENTER)
-tree1.heading("Id_Number", text="Kin of", anchor=W)
-
-# From the database
-x = 0
-for data in users:
-    tree1.insert(parent="", index="end", iid=x, text="User", values=(data[0], data[1], data[2], data[3]))
-    x += 1
-
-# Placing the treeview
-tree1.place(x=130, y=450)
-
-# Run the program
-root.mainloop()
+# import datetime
+# from tkinter import *
+# from tkinter import ttk, messagebox
+# import mysql.connector
+# from admin import adminregister
+#
+# root = Tk()
+# root.title("Lifechoices Online")  # WINDOW TITLE
+# root.geometry("1000x800")  # WINDOW SIZE
+# root.resizable(False, False)  # CAN'T CHANGE SIZE MANUALLY
+# # Background Image
+# bg_img = PhotoImage(file="lca.png")
+# bg_img = bg_img.subsample(5)
+# bg_img_lbl = Label(root, image=bg_img)
+# bg_img_lbl.place(x=450, y=0)
+#
+#
+# def draw_admin():
+#     lbl_title = Label(root, text="Life Choices Online", fg="#71D696", bg="#EBFFEC", font="Purisa 40 bold")
+#     lbl_title.place(x=100, y=20)
+#     lbl_admin = Label(root, text="Admin", fg="#71D696", bg="#EBFFEC", font="Purisa 30 bold")
+#     lbl_admin.place(x=280, y=130)
+#
+#     mydb = mysql.connector.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1',
+#                                    database='Lifechoices_Online')
+#
+#     mycursor = mydb.cursor()
+#
+#     # Calender to choose a date from
+#     # Making variables to hold current year, month and date to allow flexibility in calendar
+#     # x = datetime.datetime.now()
+#     # year = x.year
+#     # month = x.month
+#     # day = x.day
+#     #
+#     # cal = Calendar(admin, selectmode='day',
+#     #                year=year, month=month,
+#     #                day=day)
+#     # cal.place(x=50, y=250, width=250, height=200)
+#
+#     def search():
+#
+#         lbl_title.config(text="")
+#         lbl_admin.config(text="")
+#         # TO CHECK ALL THAT HAS SIGNED IN
+#         mycursor.execute("select "
+#                          " Date,ID_No, Name, In_Out, Time"
+#                          " from SignInOutTable where Date='" + "' and Name='" + stvar.get() + "'")
+#
+#         tree_search = ttk.Treeview(root)
+#         tree_search['show'] = "headings"  # otherwise there's going to be an empty first row(don't know why)
+#         # define number of columns
+#         tree_search["columns"] = ("Date", "ID_No", "Name", "Sign In/Out", "Time")
+#
+#         # assigning properties of columns
+#         tree_search.column("Date", width=100, minwidth=100, anchor=CENTER)
+#         tree_search.column("ID_No", width=120, minwidth=120, anchor=CENTER)
+#         tree_search.column("Name", width=120, minwidth=120, anchor=CENTER)
+#         tree_search.column("Sign In/Out", width=50, minwidth=50, anchor=CENTER)
+#         tree_search.column("Time", width=50, minwidth=50, anchor=CENTER)
+#
+#         # heading names
+#         tree_search.heading("Date", text="Date")
+#         tree_search.heading("ID_No", text="ID_No")
+#         tree_search.heading("Name", text="Name")
+#         tree_search.heading("Sign In/Out", text="Sign In/Out")
+#         tree_search.heading("Time", text="Time")
+#
+#         # For loop
+#         # allows for the records in "SignInOutTable"
+#         # to be displayed in the treeview diagram in correct order
+#         z = 0
+#         for userA in mycursor:
+#             tree_search.insert('', z, text="", values=(userA[0], userA[1], userA[2], userA[3], userA[4]))
+#             z = +1
+#
+#         tree_search.place(x=50, y=70, width=650, height=150)
+#
+#     def sign_in():
+#         lbl_title.config(text="")
+#         lbl_admin.config(text="")
+#         # TO CHECK ALL THAT HAS SIGNED IN
+#         mycursor.execute("select "
+#                          " max(Date) Date,max(ID_No) ID_No, Name,"
+#                          " if(In_Out = 1, 'Signed In', 'Signed Out') Sign_In_Out, max(Time) Time"
+#                          " from SignInOutTable where In_Out = 1 and Date=curdate()"
+#                          " group by Date, Name;")
+#
+#         tree_in = ttk.Treeview(root)
+#         tree_in['show'] = "headings"  # otherwise there's going to be an empty first row(don't know why)
+#         # define number of columns
+#         tree_in["columns"] = ("Date", "ID_No", "Name", "Sign In/Out", "Time")
+#
+#         # assigning properties of columns
+#         tree_in.column("Date", width=100, minwidth=100, anchor=CENTER)
+#         tree_in.column("ID_No", width=120, minwidth=120, anchor=CENTER)
+#         tree_in.column("Name", width=120, minwidth=120, anchor=CENTER)
+#         tree_in.column("Sign In/Out", width=50, minwidth=50, anchor=CENTER)
+#         tree_in.column("Time", width=50, minwidth=50, anchor=CENTER)
+#
+#         # heading names
+#         tree_in.heading("Date", text="Date")
+#         tree_in.heading("ID_No", text="ID_No")
+#         tree_in.heading("Name", text="Name")
+#         tree_in.heading("Sign In/Out", text="Sign In/Out")
+#         tree_in.heading("Time", text="Time")
+#
+#         # For loop
+#         # allows for the records in "SignInOutTable"
+#         # to be displayed in the treeview diagram in correct order
+#         for userA in mycursor:
+#             tree_in.insert('', userA[6], text="", values=(userA[0], userA[1], userA[2], userA[3], userA[4], userA[5]))
+#
+#         tree_in.place(x=50, y=70, width=700, height=150)
+#     # ENDS HERE
+#
+#     def sign_out():
+#         lbl_title.config(text="")
+#         lbl_admin.config(text="")
+#         # TO CHECK ALL THAT HAS SIGNED OUT
+#         mycursor.execute("select "
+#                          " max(Date) Date,max(ID_No) ID_No, max(Name) Name,"
+#                          " if(In_Out = 1, 'Signed In', 'Signed Out') Sign_In_Out, max(Time) Time"
+#                          " from SignInOutTable where In_Out = 0 and Date=curdate()"
+#                          "group by Time;")
+#
+#         tree_out = ttk.Treeview(root)
+#         tree_out['show'] = "headings"  # otherwise there's going to be an empty first row(don't know why)
+#         # define number of columns
+#         tree_out["columns"] = ("Date", "ID_No", "Name", "Sign In/Out", "Time")
+#
+#         # assigning properties of columns
+#         tree_out.column("Date", width=100, minwidth=100, anchor=CENTER)
+#         tree_out.column("ID_No", width=120, minwidth=120, anchor=CENTER)
+#         tree_out.column("Name", width=120, minwidth=120, anchor=CENTER)
+#         tree_out.column("Sign In/Out", width=50, minwidth=50, anchor=CENTER)
+#         tree_out.column("Time", width=50, minwidth=50, anchor=CENTER)
+#
+#         # heading names
+#         tree_out.heading("Date", text="Date")
+#         tree_out.heading("ID_No", text="ID_No")
+#         tree_out.heading("Name", text="Name")
+#         tree_out.heading("Sign In/Out", text="Sign In/Out")
+#         tree_out.heading("Time", text="Time")
+#
+#         # For loop
+#         # allows for the records in "SignInOutTable"
+#         # to be displayed in the treeview diagram in correct order
+#         x = 0
+#         for userA in mycursor:
+#             tree_out.insert('', x, text="", values=(userA[0], userA[1], userA[2], userA[3], userA[4]))
+#             x = +1
+#
+#         tree_out.place(x=50, y=70, width=700, height=150)
+#         # ENDS HERE
+#
+#     def register():
+#         lbl_title.config(text="")
+#         lbl_admin.config(text="")
+#         btn_search.destroy()
+#         mydb = mysql.connector.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1',
+#                                        database='Lifechoices_Online')
+#
+#         mycursor = mydb.cursor()
+#         mycursor.execute("Select Name, Surname, ID_No, Contact, NextOfKinName, NextOfKinContact , id from Register")
+#         tree_insert = ttk.Treeview(root)
+#         tree_insert['show'] = "headings"  # otherwise there's going to be an empty first row(don't know why)
+#         # define number of columns
+#         tree_insert["columns"] = ("Name", "Surname", "ID No", "Contact No", "NextOfKin Name", "NextOfKin Contact")
+#
+#         # assigning properties of columns
+#         tree_insert.column("Name", width=50, minwidth=50, anchor=CENTER)
+#         tree_insert.column("Surname", width=50, minwidth=50, anchor=CENTER)
+#         tree_insert.column("ID No", width=100, minwidth=100, anchor=CENTER)
+#         tree_insert.column("Contact No", width=100, minwidth=100, anchor=CENTER)
+#         tree_insert.column("NextOfKin Name", width=50, minwidth=50, anchor=CENTER)
+#         tree_insert.column("NextOfKin Contact", width=100, minwidth=100, anchor=CENTER)
+#
+#         # heading names
+#         tree_insert.heading("Name", text="Name")
+#         tree_insert.heading("Surname", text="Surname")
+#         tree_insert.heading("ID No", text="ID No")
+#         tree_insert.heading("Contact No", text="Contact No")
+#         tree_insert.heading("NextOfKin Name", text="NextOfKin Name")
+#         tree_insert.heading("NextOfKin Contact", text="NextOfKin Contact")
+#
+#         # For loop
+#         # allows for the records in "SignInOutTable"
+#         # to be displayed in the treeview diagram in correct order
+#         for userA in mycursor:
+#             tree_insert.insert('', userA[6], text="", values=(userA[0], userA[1], userA[2], userA[3], userA[4],
+#                                                               userA[5]))
+#
+#         v_scroll = ttk.Scrollbar(tree_insert, orient="vertical")
+#         v_scroll.configure(command=tree_insert.yview)
+#         tree_insert.configure(yscrollcommand=v_scroll.set)
+#         v_scroll.pack(fill=Y, side=RIGHT)
+#
+#         tree_insert.place(x=50, y=70, width=700, height=150)
+#
+#     def edit():
+#         root.destroy()
+#         adminregister()
+#
+#     def exitApplication():
+#         msg = messagebox.askquestion("EXIT", "Are you sure you want to exit?")
+#         if msg == "yes":
+#             root.destroy()
+#         else:
+#             pass
+#
+#     ######################
+#     my_list = []
+#     stvar = StringVar(root)
+#     stvar.set(['Choose Name'])
+#
+#     mycursor.execute("Select name from Register group by name having count(*)")
+#     i = 0
+#     for user in mycursor:
+#         my_list.append(user[0])
+#         i = +1
+#     print(my_list)
+#     menu = OptionMenu(root, stvar, *my_list, command=None)
+#     menu.config(fg="#71D696", bg="#EBFFEC", font="Arial 18 bold")
+#     menu["menu"].config(fg="#71D696", bg="#EBFFEC", font="Arial 15")
+#     menu.place(x=330, y=305, width=230)
+#     name_of_person = stvar.get()
+#     ######################
+#     btn_register = Button(root, text="Register", fg="#206F3D", bg="#71D696", font="Arial 25 bold", command=register)
+#     btn_register.place(x=570, y=360, width=200)
+#     btn_signIn = Button(root, text="Signed-In", fg="#206F3D", bg="#71D696", font="Arial 25 bold", command=sign_in)
+#     btn_signIn.place(x=570, y=430, width=200)
+#     btn_signOut = Button(root, text="Signed-Out", fg="#206F3D", bg="#71D696", font="Arial 25 bold", command=sign_out)
+#     btn_signOut.place(x=570, y=500, width=200)
+#     btn_search = Button(root, text="Search", fg="#206F3D", bg="#71D696", font="Arial 25 bold", command=search)
+#     btn_search.place(x=570, y=300, width=200)
+#     btn_edit = Button(root, text="Edit", fg="#206F3D", bg="#71D696", font="Arial 25 bold", command=edit)
+#     btn_edit.place(x=570, y=560, width=200)
+#
+#     mycursor.execute("Select Count(*) from SignInOutTable where Date=curdate() and In_Out=1;")
+#     test_g = PhotoImage(file="green.png")
+#     img_g = Label(bg="white", border="0", image=test_g)
+#     img_g.image = test_g
+#     img_g.place(x=50, y=640, width=50, height=50)
+#     lbl_g = Button(root, highlightthickness=0, text="", fg="white", bd="0", font="Arial 20 bold", bg="#a8d484")
+#     lbl_g.place(x=60, y=650, width=30, height=30)
+#     lbl_active = Label(root, text="Users Signed In", fg="#206F3D", bg="#EBFFEC", font="Arial 20 bold")
+#     lbl_active.place(x=110, y=650)
+#
+#     for n in mycursor:
+#         lbl_g.config(text=n)
+#
+#     btn_exit = Button(root, text="Exit", bg="grey", fg="#EBFFEC", font="Arial 25 bold", command=exitApplication)
+#     btn_exit.place(x=570, y=720, width=200)
+#
+#     root.mainloop()
+#
+#
+# if __name__ == '__main__':
+#     draw_admin()

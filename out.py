@@ -60,7 +60,7 @@ reg.place(x=130, y=10)
 # def submit():
 
 def sign_out():
-    messagebox.showinfo("SUCCES", "SIGNED OUT, BE SAFE")
+    messagebox.showinfo("SUCCESS", "SIGNED OUT, BE SAFE")
     root.destroy()
 
 
@@ -75,8 +75,8 @@ def out():
         root.destroy()
 
 
-destroy = Button(root, text="E X I T", font=("Ariel", 13), bg="black", fg="#f7f7f7", command=out)
-destroy.place(x=455, y=735)
+destroying = Button(root, text="E X I T", font=("Ariel", 13), bg="black", fg="#f7f7f7", command=out)
+destroying.place(x=455, y=735)
 
 
 # RUN CODE

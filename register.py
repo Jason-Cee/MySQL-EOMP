@@ -58,7 +58,6 @@ clean = Button(frame_left, text="CLEAR", font=("Ariel", 13), bg="#9ccb3b", fg="#
 clean.place(x=50, y=300)
 
 
-
 # SUBMIT BUTTON AND FUNCTIONALITY
 def submit():
     name = user_ent.get()
@@ -155,8 +154,8 @@ def out():
         root.destroy()
 
 
-destroy = Button(root, text="E X I T", font=("Ariel", 13), bg="black", fg="#f7f7f7", command=out)
-destroy.place(x=455, y=700)
+destroying = Button(root, text="E X I T", font=("Ariel", 13), bg="black", fg="#f7f7f7", command=out)
+destroying.place(x=455, y=700)
 
 # RUN CODE
 root.mainloop()
